@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MaaS Banca</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">
+    <span class="mark" aria-hidden="true"></span>
+    <div>
+      <strong>MaaS Banca</strong>
+      <span class="sub">Workshop Banco de Córdoba · Demo de modelo multimodal</span>
+    </div>
+  </div>
+  <div class="status" id="status" data-state="idle"><span class="dot"></span><span id="statusText">Sin configurar</span></div>
+  <button class="btn ghost config-toggle" id="toggleConfig" aria-controls="config" aria-expanded="false">Configuración</button>
+</header>
+
+<div class="layout">
+  <aside class="config" id="config">
+    <div class="config-inner">
+      <h2>Conexión al modelo</h2>
+      <p class="hint">Para migrar solo cambian estos tres valores: <b>endpoint</b>, <b>API key</b> y <b>modelo</b>. El resto de la app no se toca.</p>
+
+      <label class="field">Endpoint
+        <input id="cfgEndpoint" type="url" placeholder="https://api.tu-maas.com/v1" spellcheck="false" autocomplete="off">
+        <span class="field-note" id="endpointNote">Se llama a <code>…/chat/completions</code> (formato OpenAI)</span>
+      </label>
+
+      <label class="field">API key
+        <span class="pw">
+          <input id="cfgKey" type="password" placeholder="sk-…" spellcheck="false" autocomplete="off">
+          <button type="button" class="btn ghost small" id="showKey">Ver</button>
+        </span>
+      </label>
+
+      <label class="field">Modelo
+        <input id="cfgModel" value="deepseek-v4.1" spellcheck="false" autocomplete="off">
+      </label>
+
+      <details class="adv">
+        <summary>Parámetros</summary>
+        <div class="adv-grid">
+          <label class="field">Temperatura
+            <input id="cfgTemp" type="number" step="0.1" min="0" max="2" value="0.2">
+          </label>
+          <label class="field">Máx. tokens salida
+            <input id="cfgMax" type="number" min="64" step="64" value="2048">
+          </label>
+        </div>
+        <label class="check"><input type="checkbox" id="cfgStream" checked> Respuesta en streaming</label>
+        <label class="check"><input type="checkbox" id="cfgRemember"> Recordar la API key en este navegador</label>
+      </details>
+
+      <label class="check mock"><input type="checkbox" id="cfgMock"> Modo simulado (respuestas de ejemplo, sin llamar al modelo)</label>
+
+      <button class="btn primary block" id="testConn">Probar conexión</button>
+      <div class="test-result" id="testResult" role="status"></div>
+
+      <section class="usage" aria-label="Consumo de la sesión">
+        <h3>Consumo de la sesión</h3>
+        <dl>
+          <div><dt>Requests</dt><dd id="uReq">0</dd></div>
+          <div><dt>Latencia media</dt><dd id="uLat">—</dd></div>
+          <div><dt>Tokens entrada</dt><dd id="uIn">0</dd></div>
+          <div><dt>Tokens salida</dt><dd id="uOut">0</dd></div>
+        </dl>
+        <button class="btn ghost small" id="resetUsage">Reiniciar</button>
+      </section>
+    </div>
+  </aside>
+
+  <main>
+    <nav class="tabs" role="tablist" id="tabs"></nav>
+    <div id="panels"></div>
+  </main>
+</div>
+
+<script src="samples.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

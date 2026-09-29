@@ -1,0 +1,13 @@
+{
+  "name": "maas-banca-demo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Demo de modelo multimodal servido como MaaS para casos bancarios",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

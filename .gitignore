@@ -1,0 +1,10 @@
+# Entregables generados (se publican como Release, no en el repo)
+dist/
+*.tar.gz
+
+# Configuración local
+.env
+node_modules/
+.claude/
+.DS_Store
+Thumbs.db

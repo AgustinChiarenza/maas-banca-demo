@@ -1,0 +1,66 @@
+DEMO MaaS BANCA — Workshop Banco de Córdoba
+============================================
+
+App web para probar un modelo multimodal (DeepSeek v4.1) servido como MaaS,
+con casos bancarios: onboarding con DNI, recibo de sueldo (imagen o PDF),
+antifraude, chat libre y "migrar en 3 líneas".
+
+
+REQUISITO
+---------
+Docker Desktop instalado y abierto (que diga "Engine running").
+  https://www.docker.com/products/docker-desktop/
+No hace falta internet para levantarla: la imagen ya viene en esta carpeta.
+Sí hace falta red para llegar al endpoint del modelo.
+
+
+CÓMO LEVANTARLA
+---------------
+Mac:      doble clic en "Iniciar demo (Mac).command"
+          La primera vez macOS puede bloquearlo: clic derecho > Abrir > Abrir.
+          Alternativa desde Terminal:  sh iniciar-mac-linux.sh
+
+Windows:  doble clic en "Iniciar demo (Windows).bat"
+
+Linux:    sh iniciar-mac-linux.sh
+
+El script carga la imagen correcta para el equipo (Apple Silicon/ARM o Intel),
+busca un puerto libre desde el 8090 y abre el navegador.
+
+Para detenerla: "Detener demo (Mac).command", "Detener demo (Windows).bat"
+o  docker stop maas-banca-demo
+
+
+EN LA APP
+---------
+Abrí "Configuración" y completá:
+  - Endpoint:  URL base compatible con OpenAI (ej. https://api.tu-maas.com/v1)
+  - API key
+  - Modelo:    ej. deepseek-v4.1
+Tocá "Probar conexión". Si no hay red, activá "Modo simulado" para mostrar
+la demo con respuestas de ejemplo.
+
+
+PROTEGERLA CON CLAVE (opcional, si queda accesible desde la red)
+------------------------------------------------------------------
+Mac/Linux:  DEMO_PASSWORD=miclave sh iniciar-mac-linux.sh
+Windows:    en una consola:  set DEMO_PASSWORD=miclave
+            y luego:         "Iniciar demo (Windows).bat"
+Usuario: demo
+
+
+CONTENIDO
+---------
+imagen-arm64.tar.gz   Imagen Docker para Mac Apple Silicon (M1-M4) y Huawei Kunpeng
+imagen-amd64.tar.gz   Imagen Docker para Intel/AMD (Windows, Mac Intel, ECS x86)
+codigo-fuente/        Código completo. Ver codigo-fuente/README.md para:
+                      - correrla sin Docker (Node.js 18+:  node server.js)
+                      - reconstruir la imagen (docker build)
+                      - desplegarla en Huawei Cloud ECS (docs/)
+
+
+SI ALGO FALLA
+-------------
+"Docker no está corriendo"   Abrí Docker Desktop y esperá que termine de iniciar.
+La página no carga           docker logs maas-banca-demo
+"No se pudo conectar ..."    Revisá endpoint, key y modelo; el mensaje dice el motivo.

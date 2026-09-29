@@ -1,0 +1,12 @@
+.git
+.env
+*.bat
+*.command
+*.sh
+*.md
+node_modules
+.claude/
+dist/
+docs/
+entregable/
+scripts/
