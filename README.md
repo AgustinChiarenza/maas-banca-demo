@@ -1,4 +1,4 @@
-# Demo MaaS Banca — Workshop Banco de Córdoba
+# Demo MaaS Banca — Workshop
 
 App web para probar un modelo multimodal (DeepSeek v4.1) servido como **Model as a Service**,
 con casos de uso bancarios y una sección que muestra lo simple que es migrar de proveedor.
