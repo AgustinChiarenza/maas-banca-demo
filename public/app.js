@@ -274,6 +274,7 @@ async function callModel({ messages, onText, signal, mockKey, overrides = {} }) 
   if (!r.ok) throw new Error(describeError(r.status, await r.text()));
 
   let raw = '', reasoning = '', usageObj = null, ttft = null, model = null;
+  const toolCalls = []; // function calling: se arman por índice cuando vienen en streaming
   const emit = () => {
     const s = splitThink(raw);
     onText?.(s.content, reasoning || s.think);
@@ -311,6 +312,13 @@ async function callModel({ messages, onText, signal, mockKey, overrides = {} }) 
           raw += d.content;
           emit();
         }
+        for (const tc of d.tool_calls || []) {
+          if (ttft === null) ttft = performance.now() - t0;
+          const t = toolCalls[tc.index ?? toolCalls.length] ??= { id: '', type: 'function', function: { name: '', arguments: '' } };
+          if (tc.id) t.id = tc.id;
+          if (tc.function?.name) t.function.name += tc.function.name;
+          if (tc.function?.arguments) t.function.arguments += tc.function.arguments;
+        }
       }
     }
   } else {
@@ -319,6 +327,7 @@ async function callModel({ messages, onText, signal, mockKey, overrides = {} }) 
     const msg = j.choices?.[0]?.message || {};
     raw = Array.isArray(msg.content) ? msg.content.map((p) => p.text || '').join('') : (msg.content || '');
     reasoning = msg.reasoning_content || msg.reasoning || '';
+    toolCalls.push(...(msg.tool_calls || []));
     usageObj = j.usage || null;
     model = j.model || null;
     ttft = performance.now() - t0;
@@ -329,6 +338,7 @@ async function callModel({ messages, onText, signal, mockKey, overrides = {} }) 
   const result = {
     text: s.content, reasoning: reasoning || s.think, usage: usageObj, ttft, total,
     model: model || cfg.model, estOut: Math.round(raw.length / 4),
+    toolCalls: toolCalls.filter(Boolean),
   };
   recordUsage(result);
   return result;
@@ -524,7 +534,7 @@ Devolvé SOLO un objeto JSON, sin texto adicional, con esta forma:
 ];
 
 /* ---------- Construcción de pestañas y paneles */
-const TABS = [...CASES.map((c) => ({ id: c.id, label: c.tab })), { id: 'chat', label: 'Chat libre' }, { id: 'migrar', label: 'Migrar en 3 líneas' }];
+const TABS = [...CASES.map((c) => ({ id: c.id, label: c.tab })), { id: 'agente', label: 'Agente de sucursal' }, { id: 'chat', label: 'Chat libre' }, { id: 'migrar', label: 'Migrar en 3 líneas' }];
 
 function buildTabs() {
   const nav = $('#tabs');
@@ -1130,6 +1140,7 @@ function init() {
   loadConfig();
   buildTabs();
   CASES.forEach(buildCasePanel);
+  buildAgentPanel();
   buildChatPanel();
   buildMigrationPanel();
 

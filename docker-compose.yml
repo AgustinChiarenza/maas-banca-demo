@@ -1,0 +1,21 @@
+# Entorno de desarrollo: monta el código y reinicia el server al cambiar server.js.
+# Los cambios en public/ se ven con solo recargar el navegador.
+#   docker compose up -d        -> http://localhost:8090
+#   docker compose logs -f
+services:
+  app:
+    build: .
+    image: maas-banca-demo:dev
+    container_name: maas-banca-demo-dev
+    ports:
+      - "8090:8090"
+    environment:
+      NODE_ENV: development
+    env_file:
+      - path: .env
+        required: false
+    volumes:
+      - ./server.js:/app/server.js:ro
+      - ./public:/app/public:ro
+    command: ["node", "--watch", "server.js"]
+    restart: unless-stopped

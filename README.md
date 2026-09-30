@@ -11,8 +11,9 @@ Un solo servidor Node sin dependencias; corre igual en Windows, macOS, Linux y c
 1. **Onboarding DNI**: extrae los datos del DNI y valida edad, vigencia y coincidencia con lo declarado.
 2. **Recibo de sueldo**: lee haberes y deducciones (imagen o PDF), controla que cierren y simula el monto prestable.
 3. **Antifraude**: analiza capturas de SMS/WhatsApp/mail, da un veredicto y redacta la respuesta al cliente.
-4. **Chat libre**: texto, imágenes y PDF para preguntas del público.
-5. **Migrar en 3 líneas**: código antes/después (Python, JS, cURL) generado con la configuración actual.
+4. **Agente de sucursal**: agente con *function calling* y RAG. El modelo consulta un core bancario simulado, busca en las políticas del banco (BM25 local), simula el préstamo, crea tickets y responde citando la política. Muestra la traza paso a paso. Datos y políticas ficticios ([public/agent-data.js](public/agent-data.js)).
+5. **Chat libre**: texto, imágenes y PDF para preguntas del público.
+6. **Migrar en 3 líneas**: código antes/después (Python, JS, cURL) generado con la configuración actual.
 
 ## Guías de instalación
 
